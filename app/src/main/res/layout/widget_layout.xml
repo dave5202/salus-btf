@@ -2,12 +2,12 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="4dp">
+    android:padding="@dimen/spacing_small">
 
     <FrameLayout
         android:id="@+id/widget_container"
-        android:layout_width="72dp"
-        android:layout_height="72dp"
+        android:layout_width="@dimen/widget_size"
+        android:layout_height="@dimen/widget_size"
         android:layout_gravity="center"
         android:background="@drawable/widget_circle_background"
         android:clickable="true"
@@ -15,8 +15,8 @@
 
         <ImageView
             android:id="@+id/widget_icon"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
+            android:layout_width="@dimen/widget_icon_size"
+            android:layout_height="@dimen/widget_icon_size"
             android:layout_gravity="center"
             android:src="@drawable/ic_phone"
             android:contentDescription="@string/long_press_hint" />

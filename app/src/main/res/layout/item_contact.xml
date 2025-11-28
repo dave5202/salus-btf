@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:padding="16dp"
+    android:padding="@dimen/spacing_large"
     android:gravity="center_vertical"
     android:background="?attr/selectableItemBackground">
 
@@ -14,9 +14,9 @@
         android:layout_height="wrap_content" />
 
     <FrameLayout
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="8dp"
+        android:layout_width="@dimen/contact_avatar_size"
+        android:layout_height="@dimen/contact_avatar_size"
+        android:layout_marginStart="@dimen/spacing_medium"
         android:background="@drawable/widget_circle_background">
 
         <TextView
@@ -35,7 +35,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:orientation="vertical"
-        android:layout_marginStart="16dp">
+        android:layout_marginStart="@dimen/spacing_large">
 
         <TextView
             android:id="@+id/contact_name"
