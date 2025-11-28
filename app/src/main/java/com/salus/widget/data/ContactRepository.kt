@@ -2,7 +2,9 @@ package com.salus.widget.data
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.util.Log
 import com.google.gson.Gson
+import com.google.gson.JsonSyntaxException
 import com.google.gson.reflect.TypeToken
 
 /**
@@ -39,7 +41,8 @@ class ContactRepository(context: Context) {
         val type = object : TypeToken<List<Contact>>() {}.type
         return try {
             gson.fromJson(json, type) ?: emptyList()
-        } catch (e: Exception) {
+        } catch (e: JsonSyntaxException) {
+            Log.e(TAG, "Failed to parse contacts JSON for widget $widgetId", e)
             emptyList()
         }
     }
@@ -74,6 +77,7 @@ class ContactRepository(context: Context) {
     private fun getKey(widgetId: Int): String = "$KEY_PREFIX$widgetId"
 
     companion object {
+        private const val TAG = "ContactRepository"
         private const val PREFS_NAME = "salus_widget_prefs"
         private const val KEY_PREFIX = "widget_contacts_"
     }

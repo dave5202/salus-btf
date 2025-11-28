@@ -19,14 +19,28 @@ class ContactsAdapter(
 ) : ListAdapter<Contact, ContactsAdapter.ContactViewHolder>(ContactDiffCallback()) {
 
     private val selectedContacts = mutableSetOf<Contact>()
+    private var selectedIds = setOf<String>()
 
     /**
      * Sets the initially selected contacts.
+     * Updates only the affected items for better performance.
      */
     fun setSelectedContacts(contacts: Set<Contact>) {
+        val previouslySelected = selectedIds
         selectedContacts.clear()
         selectedContacts.addAll(contacts)
-        notifyDataSetChanged()
+        selectedIds = contacts.map { it.id }.toSet()
+        
+        // Only notify changed items instead of entire dataset
+        for (i in 0 until itemCount) {
+            val itemId = getItem(i).id
+            val wasSelected = itemId in previouslySelected
+            val isNowSelected = itemId in selectedIds
+            if (wasSelected != isNowSelected) {
+                notifyItemChanged(i)
+            }
+        }
+        
         onSelectionChanged(selectedContacts.toSet())
     }
 

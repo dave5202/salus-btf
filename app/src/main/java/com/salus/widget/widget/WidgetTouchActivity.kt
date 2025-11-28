@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.salus.widget.R
+import com.salus.widget.data.Contact
 import com.salus.widget.data.ContactRepository
 
 /**
@@ -28,6 +29,7 @@ class WidgetTouchActivity : AppCompatActivity() {
     private var longPressHandler: Handler? = null
     private var longPressRunnable: Runnable? = null
     private lateinit var repository: ContactRepository
+    private var pendingCallContact: Contact? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -91,14 +93,17 @@ class WidgetTouchActivity : AppCompatActivity() {
         val contact = repository.getRandomContact(appWidgetId)
         
         if (contact == null) {
-            Toast.makeText(this, R.string.no_contacts, Toast.LENGTH_SHORT).show()
-            finish()
+            Toast.makeText(this, R.string.no_contacts, Toast.LENGTH_LONG).show()
+            // Use Handler to delay finish() so Toast is visible
+            Handler(Looper.getMainLooper()).postDelayed({ finish() }, 1000)
             return
         }
 
         // Check for call permission
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) 
             != PackageManager.PERMISSION_GRANTED) {
+            // Store the contact for use after permission is granted
+            pendingCallContact = contact
             ActivityCompat.requestPermissions(
                 this,
                 arrayOf(Manifest.permission.CALL_PHONE),
@@ -135,12 +140,14 @@ class WidgetTouchActivity : AppCompatActivity() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         
         if (requestCode == REQUEST_CALL_PERMISSION) {
+            val contact = pendingCallContact
+            pendingCallContact = null
+            
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // Permission granted, retry the call
-                triggerRandomCall()
+                // Permission granted, make the call with the stored contact
+                contact?.let { makePhoneCall(it.phoneNumber) } ?: finish()
             } else {
                 // Permission denied, use dialer instead
-                val contact = repository.getRandomContact(appWidgetId)
                 contact?.let {
                     val dialIntent = Intent(Intent.ACTION_DIAL).apply {
                         data = Uri.parse("tel:${it.phoneNumber}")

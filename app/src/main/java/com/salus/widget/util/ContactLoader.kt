@@ -48,7 +48,14 @@ object ContactLoader {
                     val number = it.getString(numberIndex) ?: continue
 
                     // Use composite key to avoid duplicates (same contact, same number)
-                    val uniqueKey = "$id-${number.filter { c -> c.isDigit() }}"
+                    // Extract digits efficiently using StringBuilder
+                    val normalizedNumber = StringBuilder()
+                    for (c in number) {
+                        if (c.isDigit()) {
+                            normalizedNumber.append(c)
+                        }
+                    }
+                    val uniqueKey = "$id-$normalizedNumber"
                     if (uniqueKey !in seenIds) {
                         seenIds.add(uniqueKey)
                         contacts.add(Contact(id = uniqueKey, name = name, phoneNumber = number))
