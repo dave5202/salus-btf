@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Salus Widget</string>
+    <string name="widget_name">Salus Call Widget</string>
+    <string name="config_activity_label">Configure Widget</string>
+    <string name="select_contacts">Select Contacts</string>
+    <string name="no_contacts_selected">No contacts selected</string>
+    <string name="contacts_selected">%d contact(s) selected</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+    <string name="permission_required">Contact permission is required to select contacts</string>
+    <string name="call_permission_required">Call permission is required to make calls</string>
+    <string name="grant_permission">Grant Permission</string>
+    <string name="long_press_hint">Long press for 3 seconds to call</string>
+    <string name="calling">Calling…</string>
+    <string name="no_contacts">Please configure contacts first</string>
+    <string name="search_contacts">Search contacts</string>
+    <string name="widget_description">A circular widget that randomly calls one of your selected contacts when long-pressed for 3 seconds</string>
+</resources>
